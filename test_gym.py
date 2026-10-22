@@ -1,4 +1,5 @@
 """Unit tests for R4, R5 and R6 of the gym membership quote."""
+from decimal import Decimal
 import pytest
 
 from gym import apply_group_discount, apply_special_offer, apply_premium_surcharge
@@ -46,4 +47,4 @@ def test_r6_no_premium_no_surcharge():
 
 def test_r6_premium_adds_15_percent():
     """R6: a premium extra adds 15%."""
-    assert apply_premium_surcharge(86, True) == pytest.approx(98.9)
+    assert apply_premium_surcharge(86, True) == Decimal("98.90")
