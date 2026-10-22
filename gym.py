@@ -9,3 +9,8 @@ def apply_special_offer(amount):
     if amount > 200:
         return amount - 20
     return amount
+
+def apply_premium_surcharge(amount, has_premium_extra):
+    if has_premium_extra:
+        return amount * 1.15
+    return amount
