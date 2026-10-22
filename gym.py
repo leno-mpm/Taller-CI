@@ -52,3 +52,15 @@ def has_premium_extra(extras):
         if EXTRAS[extra][1]:
             return True
     return False
+
+
+
+
+def is_valid_members(members):
+    """R3: the number of members must be a whole number of at least 1."""
+    return isinstance(members, int) and members >= 1
+
+
+def calculate_subtotal(plan, extras, members):
+    """R3: (plan price + price of the extras) x number of members."""
+    return (get_plan_price(plan) + get_extras_price(extras)) * members

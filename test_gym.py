@@ -1,7 +1,7 @@
 """Unit tests for R1, R2, R3 and R7 of the gym membership quote."""
 from gym import (is_valid_plan, get_plan_price, is_valid_extras,
-                 get_extras_price, has_premium_extra)
-
+                 get_extras_price, has_premium_extra, is_valid_members,
+                 calculate_subtotal)
 
 def test_r1_valid_plans():
     """R1: the three plans of the table are valid."""
@@ -59,7 +59,7 @@ def test_r2_premium_extra_with_other_plan():
 
 
 def test_r2_extras_price():
-    """R2: the price of the extras is added."""
+    """R2: no extras = 0, GROUP_CLASSES + SPECIALIZED_PROGRAM = 15 + 40 = 55."""
     assert get_extras_price([]) == 0
     assert get_extras_price(["GROUP_CLASSES", "SPECIALIZED_PROGRAM"]) == 55
 
@@ -68,3 +68,31 @@ def test_r2_has_premium_extra():
     """R2: detects when there is a premium extra."""
     assert has_premium_extra(["PERSONAL_TRAINING", "SPA"])
     assert not has_premium_extra(["GROUP_CLASSES"])
+
+
+
+
+def test_r3_valid_members():
+    """R3: one or more members is valid."""
+    assert is_valid_members(1)
+    assert is_valid_members(7)
+
+
+def test_r3_zero_members_is_invalid():
+    """R3: zero members is invalid."""
+    assert not is_valid_members(0)
+
+
+def test_r3_negative_members_is_invalid():
+    """R3: a negative number of members is invalid."""
+    assert not is_valid_members(-3)
+
+
+def test_r3_subtotal_without_extras():
+    """R3: subtotal with only the plan: 45 x 3 = 135."""
+    assert calculate_subtotal("STANDARD", [], 3) == 135
+
+
+def test_r3_subtotal_with_extras():
+    """R3: (70 + 25 + 30) x 5 = 625."""
+    assert calculate_subtotal("PREMIUM", ["PERSONAL_TRAINING", "SPA"], 5) == 625
