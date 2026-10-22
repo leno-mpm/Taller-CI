@@ -1,4 +1,5 @@
 """Calculation functions for the gym membership quote."""
+from decimal import Decimal, ROUND_HALF_UP
 
 PLAN_PRICES = {
     "BASIC": 30,
@@ -64,3 +65,22 @@ def is_valid_members(members):
 def calculate_subtotal(plan, extras, members):
     """R3: (plan price + price of the extras) x number of members."""
     return (get_plan_price(plan) + get_extras_price(extras)) * members
+
+
+
+def is_valid_selection(plan, extras, members):
+    """R7: the selection is valid only if the plan, extras and members are valid."""
+    return (is_valid_plan(plan) and is_valid_extras(plan, extras)
+            and is_valid_members(members))
+
+
+def round_total(amount):
+    """R7: round half up to a whole number (121.5 -> 122, 122.5 -> 123)."""
+    return int(Decimal(str(amount)).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+
+
+def final_result(plan, extras, members, amount):
+    """R7: the rounded total, or -1 if the selection is invalid."""
+    if not is_valid_selection(plan, extras, members):
+        return -1
+    return round_total(amount)

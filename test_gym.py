@@ -1,7 +1,8 @@
 """Unit tests for R1, R2, R3 and R7 of the gym membership quote."""
 from gym import (is_valid_plan, get_plan_price, is_valid_extras,
                  get_extras_price, has_premium_extra, is_valid_members,
-                 calculate_subtotal)
+                 calculate_subtotal, is_valid_selection, round_total,
+                 final_result)
 
 def test_r1_valid_plans():
     """R1: the three plans of the table are valid."""
@@ -96,3 +97,46 @@ def test_r3_subtotal_without_extras():
 def test_r3_subtotal_with_extras():
     """R3: (70 + 25 + 30) x 5 = 625."""
     assert calculate_subtotal("PREMIUM", ["PERSONAL_TRAINING", "SPA"], 5) == 625
+
+
+
+def test_r7_round_half_up():
+    """R7: .5 always goes up: 121.5 -> 122 and 122.5 -> 123."""
+    assert round_total(121.5) == 122
+    assert round_total(122.5) == 123
+
+
+def test_r7_round_down():
+    """R7: less than .5 goes down: 98.49 -> 98."""
+    assert round_total(98.49) == 98
+
+
+def test_r7_round_up():
+    """R7: more than .5 goes up: 411.7 -> 412."""
+    assert round_total(411.7) == 412
+
+
+def test_r7_valid_selection():
+    """R7: a valid selection returns the rounded total: 286.35 -> 286."""
+    assert final_result("STANDARD", ["GROUP_CLASSES"], 2, 286.35) == 286
+
+
+def test_r7_invalid_plan_returns_minus_one():
+    """R7: an invalid plan gives -1."""
+    assert final_result("DIAMOND", [], 2, 150) == -1
+
+
+def test_r7_invalid_extra_returns_minus_one():
+    """R7: a premium extra with BASIC gives -1."""
+    assert final_result("BASIC", ["SPECIALIZED_PROGRAM"], 1, 70) == -1
+
+
+def test_r7_invalid_members_returns_minus_one():
+    """R7: zero members gives -1."""
+    assert final_result("PREMIUM", [], 0, 0) == -1
+
+
+def test_r7_is_valid_selection():
+    """R7: the selection is checked with R1, R2 and R3 together."""
+    assert is_valid_selection("PREMIUM", ["SPA"], 4)
+    assert not is_valid_selection("STANDARD", ["SPA"], 4)
