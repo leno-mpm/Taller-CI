@@ -6,6 +6,14 @@ PLAN_PRICES = {
     "PREMIUM": 70,
 }
 
+# extra: (price per member, is premium)
+EXTRAS = {
+    "GROUP_CLASSES": (15, False),
+    "PERSONAL_TRAINING": (25, False),
+    "SPA": (30, True),
+    "SPECIALIZED_PROGRAM": (40, True),
+}
+
 
 def is_valid_plan(plan):
     """R1: the plan must be one of the plans in the table."""
@@ -17,3 +25,30 @@ def get_plan_price(plan):
     if not is_valid_plan(plan):
         return -1
     return PLAN_PRICES[plan]
+
+
+def is_valid_extras(plan, extras):
+    """R2: every extra must exist, and premium extras need the PREMIUM plan."""
+    for extra in extras:
+        if extra not in EXTRAS:
+            return False
+        is_premium = EXTRAS[extra][1]
+        if is_premium and plan != "PREMIUM":
+            return False
+    return True
+
+
+def get_extras_price(extras):
+    """R2: sum of the prices per member of the chosen extras."""
+    total = 0
+    for extra in extras:
+        total += EXTRAS[extra][0]
+    return total
+
+
+def has_premium_extra(extras):
+    """R2: True if at least one of the extras is premium."""
+    for extra in extras:
+        if EXTRAS[extra][1]:
+            return True
+    return False
