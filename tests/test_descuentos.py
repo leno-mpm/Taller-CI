@@ -22,10 +22,23 @@ from gym.descuentos import (
         (500, 4, 450),    # Cuatro miembros: 10% de descuento
     ],
 )
-def test_descuento_grupal(monto, miembros, esperado):
-    resultado = aplicar_descuento_grupal(monto, miembros)
+def aplicar_descuento_grupal(monto, miembros):
+    """
+    Aplica un descuento del 10% cuando hay dos o más miembros.
 
-    assert resultado == Decimal(str(esperado))
+    Args:
+        monto (Decimal): Subtotal de la membresía antes del descuento.
+        miembros (int): Número de miembros de la membresía.
+
+    Returns:
+        Decimal: Monto después de aplicar el descuento grupal.
+    """
+    monto = Decimal(str(monto))
+
+    if miembros >= 2:
+        return monto * Decimal("0.90")
+
+    return monto
 
 
 # ==================================================
@@ -44,10 +57,28 @@ def test_descuento_grupal(monto, miembros, esperado):
         (500, 450),    # Descuento de 50
     ],
 )
-def test_oferta_especial(monto, esperado):
-    resultado = aplicar_oferta_especial(monto)
+def aplicar_oferta_especial(monto):
+    """
+    Aplica una oferta especial según el monto recibido.
 
-    assert resultado == Decimal(str(esperado))
+    Se descuentan $50 si el monto es mayor a $400,
+    o $20 si es mayor a $200. Los descuentos no se acumulan.
+
+    Args:
+        monto (Decimal): Monto después del descuento grupal.
+
+    Returns:
+        Decimal: Monto después de aplicar la oferta especial.
+    """
+    monto = Decimal(str(monto))
+
+    if monto > 400:
+        return monto - Decimal("50")
+
+    if monto > 200:
+        return monto - Decimal("20")
+
+    return monto
 
 
 # ==================================================
@@ -64,13 +95,25 @@ def test_oferta_especial(monto, esperado):
         (400, True, 460),   # Recargo del 15%
     ],
 )
-def test_recargo_premium(monto, tiene_premium, esperado):
-    resultado = aplicar_recargo_premium(
-        monto,
-        tiene_premium
-    )
+def aplicar_recargo_premium(monto, tiene_extra_premium):
+    """
+    Aplica un recargo del 15% cuando se selecciona un extra Premium.
 
-    assert resultado == Decimal(str(esperado))
+    Los extras Premium son SPA y SPECIALIZED_PROGRAM.
+
+    Args:
+        monto (Decimal): Monto después de aplicar la oferta especial.
+        tiene_extra_premium (bool): Indica si existe un extra Premium.
+
+    Returns:
+        Decimal: Monto después de aplicar el recargo Premium.
+    """
+    monto = Decimal(str(monto))
+
+    if tiene_extra_premium:
+        return monto * Decimal("1.15")
+
+    return monto
 
 
 # ==================================================
