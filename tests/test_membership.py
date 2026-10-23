@@ -2,7 +2,7 @@
 table from the workshop handout."""
 import pytest
 
-from gym.membership import quote_membership
+from gym.membership import INVALID_QUOTE, quote_membership
 
 
 @pytest.mark.parametrize(
@@ -40,10 +40,4 @@ def test_quote_membership_breakdown_on_invalid_selection():
     """R9: an invalid selection reports -1 for every step."""
     quote = quote_membership("GOLD", [], 1)
 
-    assert quote == {
-        "subtotal": -1,
-        "after_group_discount": -1,
-        "after_special_offer": -1,
-        "after_premium_surcharge": -1,
-        "total": -1,
-    }
+    assert quote == INVALID_QUOTE

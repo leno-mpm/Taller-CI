@@ -1,3 +1,4 @@
+"""Gym membership quote package: catalog, discounts and the quote pipeline."""
 
 from .descuentos import (
     aplicar_descuento_grupal,
