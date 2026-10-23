@@ -1,8 +1,8 @@
 """Unit tests for R1, R2, R3 and R7 of the gym membership quote."""
-from gym import (is_valid_plan, get_plan_price, is_valid_extras,
-                 get_extras_price, has_premium_extra, is_valid_members,
-                 calculate_subtotal, is_valid_selection, round_total,
-                 final_result)
+from gym.cotizacion import (is_valid_plan, get_plan_price, is_valid_extras,
+                            get_extras_price, has_premium_extra, is_valid_members,
+                            calculate_subtotal, is_valid_selection, round_total,
+                            final_result)
 
 def test_r1_valid_plans():
     """R1: the three plans of the table are valid."""
