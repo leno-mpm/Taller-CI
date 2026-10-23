@@ -1,6 +1,7 @@
+"""Unit tests for R4, R5 and R6 of the gym membership quote."""
+from decimal import Decimal
 
 import pytest
-from decimal import Decimal
 
 from gym.descuentos import (
     aplicar_descuento_grupal,
@@ -23,6 +24,7 @@ from gym.descuentos import (
     ],
 )
 def test_descuento_grupal(monto, miembros, esperado):
+    """R4: descuento del 10% con dos o más miembros."""
     resultado = aplicar_descuento_grupal(monto, miembros)
 
     assert resultado == Decimal(str(esperado))
@@ -45,6 +47,7 @@ def test_descuento_grupal(monto, miembros, esperado):
     ],
 )
 def test_oferta_especial(monto, esperado):
+    """R5: oferta especial según el monto, sin acumular descuentos."""
     resultado = aplicar_oferta_especial(monto)
 
     assert resultado == Decimal(str(esperado))
@@ -65,6 +68,7 @@ def test_oferta_especial(monto, esperado):
     ],
 )
 def test_recargo_premium(monto, tiene_premium, esperado):
+    """R6: recargo del 15% cuando hay un extra premium."""
     resultado = aplicar_recargo_premium(
         monto,
         tiene_premium

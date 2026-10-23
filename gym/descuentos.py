@@ -1,3 +1,4 @@
+"""R4, R5 y R6: descuento grupal, oferta especial y recargo premium."""
 
 from decimal import Decimal
 
@@ -49,7 +50,7 @@ def aplicar_oferta_especial(monto):
     if monto > 400:
         return monto - Decimal("50")
 
-    elif monto > 200:
+    if monto > 200:
         return monto - Decimal("20")
 
     return monto
