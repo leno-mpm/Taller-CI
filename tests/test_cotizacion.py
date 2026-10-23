@@ -21,6 +21,7 @@ def test_r1_empty_plan_is_invalid():
     assert not is_valid_plan("")
 
 
+
 def test_r1_plan_prices():
     """R1: each plan has its price."""
     assert get_plan_price("BASIC") == 30
